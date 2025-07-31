@@ -17,9 +17,9 @@ class GeneratorController:
         self._register_routes()
 
     def _register_routes(self):
-        self.blueprint.add_url_rule('/createAggregatedEmployeeData', view_func=self.create_aggregated_employee_data, methods=['GET'])
-        self.blueprint.add_url_rule('/createPdfForEmployees', view_func=self.create_pdf_for_employees, methods=['GET'])
-        self.blueprint.add_url_rule('/createArchive', view_func=self.create_archive, methods=['GET'])
+        self.blueprint.add_url_rule('/createAggregatedEmployeeData', view_func=self.create_aggregated_employee_data, methods=['POST'])
+        self.blueprint.add_url_rule('/createPdfForEmployees', view_func=self.create_pdf_for_employees, methods=['POST'])
+        self.blueprint.add_url_rule('/createArchive', view_func=self.create_archive, methods=['POST'])
 
 
     def create_aggregated_employee_data(self):

@@ -1,0 +1,48 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f7f7f7;
+}
+
+.mainArea {
+  max-width: 600px;
+  margin: 50px auto;
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.mainArea h2 {
+  margin-bottom: 30px;
+  font-size: 24px;
+}
+
+.mainArea__generateBtns,
+.mainArea__sendBtns {
+  margin-bottom: 20px;
+}
+
+.mainArea__generateBtns button,
+.mainArea__sendBtns button {
+  margin: 5px;
+  padding: 10px 20px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  background-color: #ffffff;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.mainArea__generateBtns button:hover,
+.mainArea__sendBtns button:hover {
+  background-color: #eaeaea;
+}
+
+.mainArea__messages {
+  font-size: 16px;
+  color: #333;
+  margin-top: 20px;
+}

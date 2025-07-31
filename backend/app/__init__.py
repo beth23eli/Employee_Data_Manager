@@ -6,11 +6,12 @@ from .controllers.employeeController import EmployeeController
 from .models.managerModel import Manager
 from .models.employeeModel import Employee
 from .seeds.seed_employees_managers import populate_managers, populate_employees
-
+from flask_cors import CORS
 
 
 def create_app():
     app = Flask(__name__)
+    CORS(app)
     app.config.from_object('config.Config')
 
     db.init_app(app)

@@ -14,8 +14,8 @@ class SenderController:
         self.register_routes()
 
     def register_routes(self):
-        self.blueprint.add_url_rule('/sendAggregatedEmployeeData', view_func=self.send_aggregated_employee_data, methods=['GET'])
-        self.blueprint.add_url_rule('/sendPdfToEmployees', view_func=self.send_pdf_to_employees, methods=['GET'])
+        self.blueprint.add_url_rule('/sendAggregatedEmployeeData', view_func=self.send_aggregated_employee_data, methods=['POST'])
+        self.blueprint.add_url_rule('/sendPdfToEmployees', view_func=self.send_pdf_to_employees, methods=['POST'])
 
     @staticmethod
     def send_aggregated_employee_data():
@@ -44,11 +44,10 @@ class SenderController:
         employee = employees[0]
 
         # for employee in employees:
-
         try:
             msg = Message(
                 subject="Payroll Report – " + str(datetime.now().strftime("%B %Y")),
-                recipients=["secrieru.eliza@gmail.com"],
+                recipients=[employee.email],
                 body="Attached to this email, you will find your salary report for the month of " + str(
                     datetime.now().strftime(
                         "%B%Y")) + ".\nTo open the file, the password is your personal identification number - CNP.\n\nThank you!\nPayroll Team"
