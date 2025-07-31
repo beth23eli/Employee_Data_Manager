@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.services.employeeService import EmployeeService
+from ..services.employeeService import EmployeeService
 from .generationController import GeneratorController as gc
 from .sendingController import SenderController as sc
 

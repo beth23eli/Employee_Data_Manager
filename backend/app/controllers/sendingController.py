@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
-from app.services.employeeService import EmployeeService
-from app.services.managersService import ManagerService
+from ..services.employeeService import EmployeeService
+from ..services.managersService import ManagerService
 from datetime import datetime
 from flask_mail import Message
 from ..extensions import mail

@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from app.services.employeeService import EmployeeService
+from ..services.employeeService import EmployeeService
 import openpyxl
 from datetime import datetime
 import os
