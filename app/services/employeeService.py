@@ -1,6 +1,7 @@
 from app.models.employeeModel import Employee
 from ..extensions import db
 
+
 class EmployeeService:
     @staticmethod
     def get_all_employees():
@@ -21,3 +22,4 @@ class EmployeeService:
     # def delete_employees():
     #     db.session.query(Employee).delete()
     #     db.session.commit()
+
