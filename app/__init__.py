@@ -1,12 +1,13 @@
 from flask import Flask
 from .extensions import db, mail
-from .controllers.Generator import GeneratorController
-from .controllers.Sender import SenderController
+from .controllers.generationController import GeneratorController
+from .controllers.sendingController import SenderController
 from .controllers.employeeController import EmployeeController
 from .models.managerModel import Manager
 from .models.employeeModel import Employee
 from .seeds.seed_employees_managers import populate_managers, populate_employees
-from flask_mail import Mail, Message
+
+
 
 def create_app():
     app = Flask(__name__)
@@ -25,6 +26,13 @@ def create_app():
 
 
     employee_controller = EmployeeController()
-    app.register_blueprint(employee_controller.blueprint, url_prefix='/employee')
+    app.register_blueprint(employee_controller.blueprint, url_prefix='/employees')
+
+    generation_controller = GeneratorController()
+    app.register_blueprint(generation_controller.blueprint, url_prefix='/employees/operations/generation')
+
+    sending_controller = SenderController()
+    app.register_blueprint(sending_controller.blueprint, url_prefix='/employees/operations/sending')
+
 
     return app
