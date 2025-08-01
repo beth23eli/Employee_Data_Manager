@@ -1,7 +1,5 @@
 from flask import Blueprint, request, jsonify
 from ..services.employeeService import EmployeeService
-from .generationController import GeneratorController as gc
-from .sendingController import SenderController as sc
 
 
 class EmployeeController:
@@ -28,7 +26,10 @@ class EmployeeController:
             'name': employee.name,
             'surname': employee.surname,
             'email': employee.email,
-            'salary': employee.salary
+            'position': {
+                'title': employee.position.title,
+                'salary': str(employee.position.salary)
+            }
         })
 
     @staticmethod
@@ -51,28 +52,3 @@ class EmployeeController:
                 'manager_id': employee.manager_id
             } for employee in employees
         ])
-
-    @staticmethod
-    def do_monthly_report():
-
-        try:
-            print("Doing monthly reporting...")
-            try:
-                print("Generating...")
-                gc.create_aggregated_employee_data()
-                gc.create_pdf_for_employees()
-            except Exception as e:
-                return jsonify({"error": f"Generation failed: {str(e)}"}), 400
-
-            try:
-                print("Sending...")
-                sc.send_aggregated_employee_data()
-                sc.send_pdf_to_employees()
-            except Exception as e:
-                return jsonify({"error": f"Sending failed: {str(e)}"}), 400
-
-            print("Generating the archive...")
-            gc.create_archive()
-
-        except Exception as e:
-            return jsonify({"error": f"Monthly reporting failed: {str(e)}"}), 400

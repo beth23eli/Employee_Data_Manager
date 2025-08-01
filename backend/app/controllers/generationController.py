@@ -1,9 +1,8 @@
 from flask import Blueprint, jsonify
 from ..services.employeeService import EmployeeService
 import openpyxl
-from datetime import datetime
 import os
-from ..extensions import PDF
+from ..extensions import PDF, previous_month
 from fpdf.enums import AccessPermission, EncryptionMethod
 import zipfile
 
@@ -40,11 +39,11 @@ class GeneratorController:
                                     e.surname,
                                     e.cnp_number,
                                     e.email,
-                                    str(e.position),
+                                    str(e.position.title),
                                     e.num_worked_days,
                                     e.num_vacation_days,
                                     e.bonuses or 0,
-                                    e.salary
+                                    e.position.salary
                                 ]
                                 for e in employees
                             ]
@@ -52,7 +51,7 @@ class GeneratorController:
             for row in complete_data:
                 sheet.append(row)
 
-            workbook.save("reports/employee_data_" + str(datetime.now().strftime("%B%Y")) + ".xlsx")
+            workbook.save("reports/employee_data_" + str(previous_month.strftime("%B%Y")) + ".xlsx")
 
             self.is_completed = True
             return jsonify({"message": "Aggregated employee data completed successfully"}), 200
@@ -77,13 +76,13 @@ class GeneratorController:
                     pdf.cell(200, 10, text=f"Name: {employee.name} {employee.surname}", ln=True)
                     pdf.cell(200, 10, text=f"CNP: {employee.cnp_number}", ln=True)
                     pdf.cell(200, 10, text=f"Email: {employee.email}", ln=True)
-                    pdf.cell(200, 10, text=f"Position: {employee.position}", ln=True)
+                    pdf.cell(200, 10, text=f"Position: {employee.position.title}", ln=True)
                     pdf.cell(200, 10, text=f"Number of worked days: {employee.num_worked_days}", ln=True)
                     pdf.cell(200, 10, text=f"Number of taken vacation days: {employee.num_vacation_days}", ln=True)
-                    pdf.cell(200, 10, text=f"Salary: {employee.salary}", ln=True)
+                    pdf.cell(200, 10, text=f"Salary: {employee.position.salary}", ln=True)
                     pdf.cell(200, 10, text=f"Bonuses: {employee.bonuses}", ln=True)
 
-                    file_name = f"reports/employee{employee.id}_" + str(datetime.now().strftime("%B%Y")) + ".pdf"
+                    file_name = f"reports/employee{employee.id}_" + str(previous_month.strftime("%B%Y")) + ".pdf"
                     pdf.set_encryption(
                         owner_password=employee.cnp_number,
                         user_password=employee.cnp_number,
@@ -104,8 +103,12 @@ class GeneratorController:
     def create_archive():
         path = 'reports/'
         files = os.listdir(path)
+
+        if not os.path.exists("archives"):
+            os.makedirs("archives")
+
         try:
-            with zipfile.ZipFile("archives/monthly_report_" + str(datetime.now().strftime("%B%Y")) + ".zip", mode="w") as archive:
+            with zipfile.ZipFile("archives/monthly_report_" + str(previous_month.strftime("%B%Y")) + ".zip", mode="w") as archive:
                 for file in files:
                     full_path = os.path.join(path, file)
                     archive.write(full_path, arcname=file)

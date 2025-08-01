@@ -11,7 +11,10 @@ function Dashboard() {
     async function generateExcel() {
         try {
             const response = await fetch(
-                "http://127.0.0.1:5000/employees/operations/generation/createAggregatedEmployeeData"
+                "http://127.0.0.1:5000/employees/operations/generation/createAggregatedEmployeeData",
+                {
+                    method: "POST",
+                }
             );
             if (!response.ok) throw new Error("Excel generation failed");
             const data = await response.json();
@@ -26,7 +29,10 @@ function Dashboard() {
     async function generatePdfs() {
         try {
             const response = await fetch(
-                "http://127.0.0.1:5000/employees/operations/generation/createPdfForEmployees"
+                "http://127.0.0.1:5000/employees/operations/generation/createPdfForEmployees",
+                {
+                    method: "POST",
+                }
             );
             if (!response.ok) throw new Error("PDF generation failed");
             const data = await response.json();
@@ -44,7 +50,10 @@ function Dashboard() {
         try {
             // send to manager
             const sendExcelRes = await fetch(
-                "http://127.0.0.1:5000/employees/operations/sending/sendAggregatedEmployeeData"
+                "http://127.0.0.1:5000/employees/operations/sending/sendAggregatedEmployeeData",
+                {
+                    method: "POST",
+                }
             );
             if (!sendExcelRes.ok) throw new Error("Failed to send Excel to manager");
             await sendExcelRes.json();
@@ -53,7 +62,10 @@ function Dashboard() {
 
             // send to employees
             const sendPdfsRes = await fetch(
-                "http://127.0.0.1:5000/employees/operations/sending/sendPdfToEmployees"
+                "http://127.0.0.1:5000/employees/operations/sending/sendPdfToEmployees",
+                {
+                    method: "POST",
+                }
             );
             if (!sendPdfsRes.ok) throw new Error("Failed to send PDFs to employees");
             await sendPdfsRes.json();
@@ -62,7 +74,10 @@ function Dashboard() {
             setArchiveMsg("Creating the archive...");
             // create archive when sending is complete
             const createArchRes = await fetch(
-                "http://127.0.0.1:5000/employees/operations/generation/createArchive"
+                "http://127.0.0.1:5000/employees/operations/generation/createArchive",
+                {
+                    method: "POST",
+                }
             );
             if (!createArchRes.ok) throw new Error("Failed to create the archive");
             await createArchRes.json();

@@ -1,9 +1,8 @@
 from flask import Blueprint, jsonify
 from ..services.employeeService import EmployeeService
 from ..services.managersService import ManagerService
-from datetime import datetime
 from flask_mail import Message
-from ..extensions import mail
+from ..extensions import mail, previous_month
 
 
 
@@ -25,9 +24,11 @@ class SenderController:
             msg = Message(
                 subject="Monthly Employees Summary Report",
                 recipients=recipients,
-                body="Hello,\n\nPlease find attached the employees summary report for the last month.\n\nRegards,\nHR Team"
+                body="Hello,\n\nPlease find attached the employees summary report for the month of" + str(
+                    previous_month.strftime(
+                        "%B%Y")) + ".\n\nRegards,\nHR Team"
             )
-            file_name = "employee_data_" + str(datetime.now().strftime("%B%Y")) + ".xlsx"
+            file_name = "employee_data_" + str(previous_month.strftime("%B%Y")) + ".xlsx"
             with open("reports/" + file_name, "rb") as f:
                 msg.attach(file_name, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                            f.read())
@@ -38,6 +39,7 @@ class SenderController:
         except Exception as e:
             return jsonify({"error": str(e)}), 400
 
+
     @staticmethod
     def send_pdf_to_employees():
         employees = EmployeeService.get_all_employees()
@@ -46,13 +48,13 @@ class SenderController:
         # for employee in employees:
         try:
             msg = Message(
-                subject="Payroll Report – " + str(datetime.now().strftime("%B %Y")),
+                subject="Payroll Report – " + str(previous_month.strftime("%B %Y")),
                 recipients=[employee.email],
                 body="Attached to this email, you will find your salary report for the month of " + str(
-                    datetime.now().strftime(
+                    previous_month.strftime(
                         "%B%Y")) + ".\nTo open the file, the password is your personal identification number - CNP.\n\nThank you!\nPayroll Team"
             )
-            file_name = "employee" + str(employee.id) + "_" + str(datetime.now().strftime("%B%Y")) + ".pdf"
+            file_name = "employee" + str(employee.id) + "_" + str(previous_month.strftime("%B%Y")) + ".pdf"
             with open("reports/" + file_name, "rb") as f:
                 msg.attach(file_name, "application/pdf", f.read())
 
