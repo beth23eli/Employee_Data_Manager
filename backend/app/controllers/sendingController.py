@@ -45,21 +45,22 @@ class SenderController:
         employees = EmployeeService.get_all_employees()
         employee = employees[0]
 
-        # for employee in employees:
-        try:
-            msg = Message(
-                subject="Payroll Report – " + str(previous_month.strftime("%B %Y")),
-                recipients=[employee.email],
-                body="Attached to this email, you will find your salary report for the month of " + str(
-                    previous_month.strftime(
-                        "%B%Y")) + ".\nTo open the file, the password is your personal identification number - CNP.\n\nThank you!\nPayroll Team"
-            )
-            file_name = "employee" + str(employee.id) + "_" + str(previous_month.strftime("%B%Y")) + ".pdf"
-            with open("reports/" + file_name, "rb") as f:
-                msg.attach(file_name, "application/pdf", f.read())
+        for employee in employees:
+            try:
+                msg = Message(
+                    subject="Payroll Report – " + str(previous_month.strftime("%B %Y")),
+                    recipients=[employee.email],
+                    body="Attached to this email, you will find your salary report for the month of " + str(
+                        previous_month.strftime(
+                            "%B%Y")) + ".\nTo open the file, the password is your personal identification number - CNP.\n\nThank you!\nPayroll Team"
+                )
+                file_name = "employee" + str(employee.id) + "_" + str(previous_month.strftime("%B%Y")) + ".pdf"
+                with open("reports/" + file_name, "rb") as f:
+                    msg.attach(file_name, "application/pdf", f.read())
 
-            mail.send(msg)
+                mail.send(msg)
 
-            return jsonify({f"message": f"Pdf file sent successfully to employee {employee.id}"}), 200
-        except Exception as e:
-            return jsonify({"error": str(e)}), 400
+                return jsonify({f"message": f"Pdf file sent successfully to employees"}), 200
+            except Exception as e:
+                return jsonify({"error": str(e)}), 400
+        return None

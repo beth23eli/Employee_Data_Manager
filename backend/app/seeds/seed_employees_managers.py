@@ -5,7 +5,7 @@ from ..models.positionModel import Position
 import random
 
 def populate_managers(count=10):
-    db.session.add(Manager('Eliza', 'Secrieru', 'secrieru.eliza@gmail.com'))
+    db.session.add(Manager('Alina', 'Brinza', 'alina.branza@endava.com'))
     # for _ in range(count):
     #     name = faker.first_name()
     #     surname = faker.last_name()
@@ -22,7 +22,7 @@ def populate_employees(count=99):
 
     db.session.add(
         Employee(
-            'Maria', 'Secrieru', 6000000000000, 'maria.secrieru@endava.com',
+            'Matei', 'Manea', 6000000000000, 'matei.manea@endava.com',
             position=random.choice(all_positions),
             manager_id=1,
             num_worked_days=19,
@@ -30,6 +30,7 @@ def populate_employees(count=99):
             bonuses=0
         )
     )
+
 
     for _ in range(count):
         name = faker.first_name()

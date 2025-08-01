@@ -16,6 +16,8 @@ services:
   db:
     image: postgres:15
     restart: on-failure
+    ports:
+      - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -33,8 +35,6 @@ services:
       - /app/node_modules
     stdin_open: true
     tty: true
-    environment:
-      - CHOKIDAR_USEPOLLING=true
 
 volumes:
   pgdata:
